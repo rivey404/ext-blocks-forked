@@ -1,0 +1,209 @@
+.extblocks_settings .menu_button {
+    width: fit-content;
+    display: flex;
+    gap: 10px;
+    flex-direction: row;
+}
+
+.ExtBlocks-editor-context-list-label .menu_button {
+    width: fit-content;
+    display: flex;
+    gap: 10px;
+    flex-direction: row;
+}
+
+.ExtBlocks-editor-context-list-label {
+    display: flex;
+    align-items: baseline;
+    gap: 1em;
+}
+
+.ExtBlocks-editor-context-list-label > .ExtBlocks-editor-context-list-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 0.5em;
+}
+
+.extblocks_settings .checkbox {
+    align-items: center;
+}
+
+.ExtBlocks-editor-context-container, .ExtBlocks-blocks-container {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    overflow-y: auto;
+    width: 100%;
+    height: 100%;
+}
+
+.ExtBlocks-blocks-container:empty::after {
+    content: "No blocks found";
+    font-size: 0.95em;
+    opacity: 0.7;
+    display: block;
+    text-align: center;
+}
+
+.ExtBlocks-editor-context-container:empty::after {
+    content: "No items found";
+    font-size: 0.95em;
+    opacity: 0.7;
+    display: block;
+    text-align: center;
+}
+
+.ExtBlocks-preset {
+    display: flex;
+    align-items: baseline;
+    gap: 1em;
+}
+.ExtBlocks-preset > .ExtBlocks-preset-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 0.5em;
+}
+
+#ExtBlocks-proxy-toggle {
+    margin-bottom: 10px;
+}
+
+#ExtBlocks-editor-template {
+    height: 100%;
+}
+
+.ExtBlocks-editor {
+    height: 100%;
+}
+
+.ExtBlocks-editor-header {
+    height: 4%;
+}
+
+.ExtBlocks-editor-body {
+    height: 96%;
+}
+
+.ExtBlocks-editor-settings {
+    width: 60%;
+}
+
+.ExtBlocks-editor-context {
+    width: 40%;
+}
+
+.ExtBlocks-editor-context-settings {
+    height: 85%;
+}
+
+.ExtBlocks-editor-context-builder {
+    height: 70%;
+}
+
+.ExtBlocks-editor-context-wrapper {
+    height: 30%;
+}
+
+.ExtBlocks-scripteditor-settings {
+    width: 70%;
+}
+
+.ExtBlocks-scripteditor-states {
+    width: 30%;
+}
+
+.ExtBlocks-block-label {
+    align-items: center;
+    border: 1px solid var(--SmartThemeBorderColor);
+    border-radius: 10px;
+    padding: 0 5px;
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
+.ExtBlocks-block-icon {
+    width: 15px;
+    text-align: center;
+}
+
+.ExtBlocks-block-label:has(.disable_ExtBlocks:checked) .ExtBlocks_block_name {
+    text-decoration: line-through;
+    filter: grayscale(0.5);
+}
+
+input.disable_ExtBlocks {
+    display: none !important;
+}
+
+.ExtBlocks-toggle-off {
+    cursor: pointer;
+    opacity: 0.5;
+    filter: grayscale(0.5);
+    transition: opacity 0.2s ease-in-out;
+}
+
+.ExtBlocks-toggle-off:hover {
+    opacity: 1;
+    filter: none;
+}
+
+.ExtBlocks-toggle-on {
+    cursor: pointer;
+}
+
+.disable_ExtBlocks:checked ~ .ExtBlocks-toggle-off {
+    display: block;
+}
+
+.disable_ExtBlocks:checked ~ .ExtBlocks-toggle-on {
+    display: none;
+}
+
+.disable_ExtBlocks:not(:checked) ~ .ExtBlocks-toggle-off {
+    display: none;
+}
+
+.disable_ExtBlocks:not(:checked) ~ .ExtBlocks-toggle-on {
+    display: block;
+}
+
+.ExtBlocks-editor-context-item-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.ExtBlocks-preset-context-item-save,
+.ExtBlocks-preset-context-item-exit {
+    flex: none;
+    cursor: pointer;
+}
+
+.ExtBlocks-storage {
+    height: 80dvh;
+}
+
+.custom-menu-button {
+    color: var(--SmartThemeBodyColor);
+    width: 100%;
+    background-color: var(--SmartThemeBlurTintColor);
+    border: 1px solid var(--SmartThemeBorderColor);
+    border-radius: 5px;
+    padding: 3px 5px;
+    cursor: pointer;
+    margin: 5px 0;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.custom-menu-button:hover,
+.custom-menu-button.active {
+    background-color: var(--white30a);
+}
+
+.custom-menu-button .custom-cyoa-option-value {
+    display: none;
+}
