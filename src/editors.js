@@ -128,7 +128,11 @@ export async function openEditor(existingId, isScoped) {
             editorHtml.find('#ExtBlocks-editor-context-builder-block').hide()
             editorHtml.find('#ExtBlocks-editor-context-builder-keywordmessages').show()
         }
-        exitEditMode(value);
+        
+        // Only call exitEditMode if we're not currently editing a context item
+        if (editingContextItemIndex === -1) {
+            exitEditMode(value);
+        }
     }
 
     editorHtml.find('#ExtBlocks-editor-context-item-save').off('click').on('click', () => {
@@ -320,30 +324,6 @@ export async function openEditor(existingId, isScoped) {
     ];
     await interactiveSortData(sortableContextItems);
 
-    editorHtml.find(`select[name="ExtBlocks-editor-context-item"]`).off('click').on('change', (event) => {
-        const value = editorHtml.find(`select[name="ExtBlocks-editor-context-item"]`).val();
-        if (value === ContextType.TEXT) {
-            editorHtml.find('#ExtBlocks-editor-context-builder-keywordmessages').hide()
-            editorHtml.find('#ExtBlocks-editor-context-builder-messages').hide()
-            editorHtml.find('#ExtBlocks-editor-context-builder-block').hide()
-            editorHtml.find('#ExtBlocks-editor-context-builder-text').show()
-        } else if (value === ContextType.LAST_MESSAGES) {
-            editorHtml.find('#ExtBlocks-editor-context-builder-keywordmessages').hide()
-            editorHtml.find('#ExtBlocks-editor-context-builder-text').hide()
-            editorHtml.find('#ExtBlocks-editor-context-builder-block').hide()
-            editorHtml.find('#ExtBlocks-editor-context-builder-messages').show()
-        } else if (value === ContextType.PREVIOUS_BLOCK) {
-            editorHtml.find('#ExtBlocks-editor-context-builder-keywordmessages').hide()
-            editorHtml.find('#ExtBlocks-editor-context-builder-messages').hide()
-            editorHtml.find('#ExtBlocks-editor-context-builder-text').hide()
-            editorHtml.find('#ExtBlocks-editor-context-builder-block').show()
-        } else if (value === ContextType.LAST_MESSAGES_KEYWORD) {
-            editorHtml.find('#ExtBlocks-editor-context-builder-messages').hide()
-            editorHtml.find('#ExtBlocks-editor-context-builder-text').hide()
-            editorHtml.find('#ExtBlocks-editor-context-builder-block').hide()
-            editorHtml.find('#ExtBlocks-editor-context-builder-keywordmessages').show()
-        }
-    });
 
     editorHtml.find('.ExtBlocks-preset-context-item-add').off('click').on('click', () => {
         let context_item;
