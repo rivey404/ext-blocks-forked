@@ -106,6 +106,17 @@ export async function openEditor(existingId, isScoped) {
     function handleContextItemTypeChange() {
         if (isResettingType) return;
 
+        // Auto-save current context item if we're editing one and switching types
+        if (editingContextItemIndex !== -1) {
+            const existingId = contextItems[editingContextItemIndex].id;
+            const context_item = updateContextItemFromForm(existingId);
+            
+            if (context_item) {
+                contextItems[editingContextItemIndex] = context_item;
+                loadContextItems(editorHtml);
+            }
+        }
+
         const value = editorHtml.find(`select[name="ExtBlocks-editor-context-item"]`).val();
         
         // Hide all context builder sections first to prevent overlap
@@ -209,6 +220,31 @@ export async function openEditor(existingId, isScoped) {
     editorHtml.find('#ExtBlocks-editor-context-item-exit').off('click').on('click', () => {
         exitEditMode();
     });
+
+    // Initialize the context builder UI state
+    function initializeContextBuilderUI() {
+        const initialValue = editorHtml.find(`select[name="ExtBlocks-editor-context-item"]`).val();
+        
+        // Hide all sections first
+        editorHtml.find('#ExtBlocks-editor-context-builder-text').hide();
+        editorHtml.find('#ExtBlocks-editor-context-builder-messages').hide();
+        editorHtml.find('#ExtBlocks-editor-context-builder-keywordmessages').hide();
+        editorHtml.find('#ExtBlocks-editor-context-builder-block').hide();
+        
+        // Show the appropriate section based on initial value
+        if (initialValue === 'text') {
+            editorHtml.find('#ExtBlocks-editor-context-builder-text').show();
+        } else if (initialValue === 'last_messages') {
+            editorHtml.find('#ExtBlocks-editor-context-builder-messages').show();
+        } else if (initialValue === 'previous_block') {
+            editorHtml.find('#ExtBlocks-editor-context-builder-block').show();
+        } else if (initialValue === 'last_messages_keyword') {
+            editorHtml.find('#ExtBlocks-editor-context-builder-keywordmessages').show();
+        }
+    }
+
+    // Initialize the UI state
+    initializeContextBuilderUI();
 
     editorHtml.find(`select[name="ExtBlocks-editor-context-item"]`).off('change').on('change', handleContextItemTypeChange);
 
@@ -337,7 +373,7 @@ export async function openEditor(existingId, isScoped) {
     ];
     await interactiveSortData(sortableContextItems);
 
-    editorHtml.find(`select[name="ExtBlocks-editor-context-item"]`).off('click').on('change', handleContextItemTypeChange);
+    // Remove duplicate event handler - already set on line 213
 
     function createContextItemFromForm() {
         const id = uuidv4();
