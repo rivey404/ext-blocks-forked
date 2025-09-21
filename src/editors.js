@@ -49,13 +49,25 @@ export async function openEditor(existingId, isScoped) {
     function loadContextItemForEditing(context_item) {
         editorHtml.find('.ExtBlocks-editor-context-builder-name').val(context_item.name);
 
+        // Temporarily disable the change handler to prevent auto-save during loading
         editorHtml.find(`select[name="ExtBlocks-editor-context-item"]`).off('change', handleContextItemTypeChange);
-        editorHtml.find(`select[name="ExtBlocks-editor-context-item"]`).val(context_item.type).trigger('change');
-        editorHtml.find(`select[name="ExtBlocks-editor-context-item"]`).on('change', handleContextItemTypeChange);
-
+        
+        // Set the dropdown value and manually trigger UI update
+        editorHtml.find(`select[name="ExtBlocks-editor-context-item"]`).val(context_item.type);
+        
+        // Manually update the UI to show the correct section
+        // Hide all sections first
+        editorHtml.find('#ExtBlocks-editor-context-builder-text').hide();
+        editorHtml.find('#ExtBlocks-editor-context-builder-messages').hide();
+        editorHtml.find('#ExtBlocks-editor-context-builder-keywordmessages').hide();
+        editorHtml.find('#ExtBlocks-editor-context-builder-block').hide();
+        
+        // Show the appropriate section and populate fields
         if (context_item.type === 'text') {
+            editorHtml.find('#ExtBlocks-editor-context-builder-text').show();
             editorHtml.find('.ExtBlocks-editor-context-builder-text-content').val(context_item.text);
         } else if (context_item.type === 'last_messages') {
+            editorHtml.find('#ExtBlocks-editor-context-builder-messages').show();
             editorHtml.find('input[name="ExtBlocks-editor-context-builder-messages-count"]').val(context_item.messages_count);
             editorHtml.find('select[name="ExtBlocks-editor-context-builder-messages-separator"]').val(context_item.messages_separator);
             editorHtml.find('.ExtBlocks-editor-context-builder-messages-userprefix').val(context_item.user_prefix);
@@ -63,6 +75,7 @@ export async function openEditor(existingId, isScoped) {
             editorHtml.find('.ExtBlocks-editor-context-builder-messages-charprefix').val(context_item.char_prefix);
             editorHtml.find('.ExtBlocks-editor-context-builder-messages-charsuffix').val(context_item.char_suffix);
         } else if (context_item.type === 'last_messages_keyword') {
+            editorHtml.find('#ExtBlocks-editor-context-builder-keywordmessages').show();
             editorHtml.find('.ExtBlocks-editor-context-builder-keywordmessages-keywordstopper').val(context_item.keyword_stopper);
             editorHtml.find('select[name="ExtBlocks-editor-context-builder-messages-separator"]').val(context_item.messages_separator);
             editorHtml.find('.ExtBlocks-editor-context-builder-messages-userprefix').val(context_item.user_prefix);
@@ -70,9 +83,13 @@ export async function openEditor(existingId, isScoped) {
             editorHtml.find('.ExtBlocks-editor-context-builder-messages-charprefix').val(context_item.char_prefix);
             editorHtml.find('.ExtBlocks-editor-context-builder-messages-charsuffix').val(context_item.char_suffix);
         } else if (context_item.type === 'previous_block') {
+            editorHtml.find('#ExtBlocks-editor-context-builder-block').show();
             editorHtml.find('.ExtBlocks-editor-context-builder-block-name').val(context_item.block_name);
             editorHtml.find('input[name="ExtBlocks-editor-context-builder-block-count"]').val(context_item.block_count ?? 1);
         }
+
+        // Re-enable the change handler
+        editorHtml.find(`select[name="ExtBlocks-editor-context-item"]`).on('change', handleContextItemTypeChange);
 
         editorHtml.find('#ExtBlocks-editor-context-item-new').hide();
         editorHtml.find('#ExtBlocks-editor-context-item-save').show();
