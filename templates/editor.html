@@ -1,0 +1,396 @@
+<div id="ExtBlocks-editor-template">
+    <div class="ExtBlocks-editor">
+        <h3 class="ExtBlocks-editor-header flex-container justifyCenter alignItemsBaseline">
+            <strong data-i18n="Block Editor">Generated Block Editor</strong>
+        </h3>
+
+        <hr>
+
+        <div class="ExtBlocks-editor-body flex-container flexFlowRow">
+            <div class="ExtBlocks-editor-settings flex-container flexFlowColumn">
+                <h4 class="flex-container justifyCenter alignItemsBaseline">
+                    <strong data-i18n="Block Settings">Block Settings</strong>
+                </h4>
+                <div class="flex-container flexFlowColumn">
+                    <div class="flex1">
+                        <label for="ExtBlocks-editor-block-name" class="title_restorable">
+                            <small data-i18n="Block Name">Block Name</small>
+                        </label>
+                        <div>
+                            <input
+                                class="ExtBlocks-editor-block-name text_pole textarea_compact"
+                                placeholder="Exact name without angle brackets."
+                                type="text" />
+                        </div>
+                    </div>
+
+                    <div class="flex1 flex-container flexNoGap">
+                        <small data-i18n="[title]ExtBlocks-editor-block-type-desc" title="">
+                            <span data-i18n="Block Type">Block Type</span>
+                            <span class="fa-solid fa-circle-question note-link-span"></span>
+                        </small>
+                        <select name="ExtBlocks-editor-block-type" class="text_pole">
+                            <option value="generated">Injectable</option>
+                            <option value="rewrite">Rewrite</option>
+                        </select>
+                    </div>
+
+                    <div class="flex1">
+                        <label for="ExtBlocks-editor-block-template" class="title_restorable">
+                            <small data-i18n="Block Template">Block Template</small>
+                        </label>
+                        <div>
+                            <textarea
+                                class="ExtBlocks-editor-block-template text_pole wide100p textarea_compact"
+                                data-i18n="[placeholder]ExtBlocks-editor-block-template-placeholder"
+                                placeholder="Template for the block."
+                                rows="14"
+                            ></textarea>
+                        </div>
+                    </div>
+                    <div class="flex1">
+                        <label for="ExtBlocks-editor-block-prompt" class="title_restorable">
+                            <small data-i18n="Block Prompt">Block Prompt</small>
+                        </label>
+                        <div>
+                            <textarea
+                                class="ExtBlocks-editor-block-prompt text_pole wide100p textarea_compact"
+                                data-i18n="[placeholder]ExtBlocks-editor-block-prompt-placeholder"
+                                placeholder="Prompt for the block."
+                                rows="8"
+                            ></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-container">
+                    <div class="flex1 wi-enter-footer-text flex-container flexFlowColumn flexNoGap alignitemsstart">
+                        <small data-i18n="ExtBlocks-editor-triggers">Triggers</small>
+                        <div title="Messages sent by the user and swipes.">
+                            <label class="checkbox flex-container">
+                                <input type="checkbox" name="user_message">
+                                <span data-i18n="User Message">User Message</span>
+                            </label>
+                        </div>
+
+                        <div title="Messages received from the Generation API.">
+                            <label class="checkbox flex-container">
+                                <input type="checkbox" name="char_message">
+                                <span data-i18n="Char Message">Char Message</span>
+                            </label>
+                        </div>
+
+                        <div class="flex-container wide100p marginTop5">
+                            <div class="flex1 flex-container flexNoGap">
+                                <small data-i18n="[title]ExtBlocks-editor-trigger-periodicity-desc" title="">
+                                    <span data-i18n="Trigger periodicity">Trigger periodicity</span>
+                                    <span class="fa-solid fa-circle-question note-link-span"></span>
+                                </small>
+                                <select name="ExtBlocks-editor-trigger-periodicity" class="text_pole">
+                                    <option value="periodic">Periodic</option>
+                                    <option value="keyword">Keyword-based</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="Extblocks-editor-period-wrapper flex-container wide100p marginTop5">
+                            <div class="flex1 flex-container flexNoGap">
+                                <small data-i18n="[title]ExtBlocks-editor-period-desc" title="">
+                                    <span data-i18n="Period">Period</span>
+                                    <span class="fa-solid fa-circle-question note-link-span"></span>
+                                </small>
+                                <input name="period" class="text_pole textarea_compact" type="number" min="0" max="999" data-i18n="[placeholder]ExtBlocks-editor-period-placeholder" placeholder="2" />
+                            </div>
+                        </div>
+
+                        <div class="Extblocks-editor-keyword-wrapper flex-container wide100p marginTop5">
+                            <div class="flex1 flex-container flexNoGap">
+                                <div class="flex-container" style="align-items: baseline; justify-content: space-between;">
+                                    <small data-i18n="[title]ExtBlocks-editor-keyword-desc" title="">
+                                        <span data-i18n="Keyword">Keyword</span>
+                                        <span class="fa-solid fa-circle-question note-link-span"></span>
+                                    </small>
+                                    <div title="The keyword will be treated as a regular expression.">
+                                        <label class="checkbox flex-container">
+                                            <input type="checkbox" name="keyword_is_regex" />
+                                            <span data-i18n="Regex">Regex</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <input
+                                name="keyword"
+                                class="ExtBlocks-editor-keyword text_pole textarea_compact"
+                                type="text" />
+                            </div>
+                        </div>
+
+                        <small data-i18n="ExtBlocks-editor-state">State</small>
+
+                        <label class="checkbox flex-container">
+                            <input type="checkbox" name="disabled" />
+                            <span data-i18n="Disabled">Disabled</span>
+                        </label>
+
+                        <div id="ExtBlocks-editor-hide-display-wrapper" title="Do not display blocks in chat.">
+                            <label class="checkbox flex-container">
+                                <input type="checkbox" name="hide_display">
+                                <span data-i18n="Hide From Display">Hide From Display</span>
+                            </label>
+                        </div>
+
+                        <div id="ExtBlocks-editor-inject-block-wrapper">
+                            <label class="checkbox flex-container">
+                                <input type="checkbox" name="inject_block" />
+                                <span data-i18n="Inject block">Inject block</span>
+                            </label>
+                        </div>
+                    </div>
+
+
+                    <div class="flex1 wi-enter-footer-text flex-container flexFlowColumn flexNoGap alignitemsstart">
+                        <div id="ExtBlocks-editor-inject-settings">
+                            <div class="flex-container wide100p marginTop5">
+                                <div class="flex1 flex-container flexNoGap">
+                                    <small data-i18n="[title]ExtBlocks-editor-injection-role-desc" title="">
+                                        <span data-i18n="Injection Role">Injection Role</span>
+                                        <span class="fa-solid fa-circle-question note-link-span"></span>
+                                    </small>
+                                    <select name="ExtBlocks-editor-injection-role" class="text_pole">
+                                        <option value="0">System</option>
+                                        <option value="1">User</option>
+                                        <option value="2">Assistant</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="flex-container wide100p marginTop5">
+                                <div class="flex1 flex-container flexNoGap">
+                                <small data-i18n="[title]ExtBlocks-editor-injection-position-desc" title="">
+                                    <span data-i18n="Injection Position">Injection Position</span>
+                                    <span class="fa-solid fa-circle-question note-link-span"></span>
+                                </small>
+                                <select name="ExtBlocks-editor-injection-position" class="text_pole">
+                                    <option value="0">After Main Prompt</option>
+                                    <option value="1">In Chat</option>
+                                    <option value="2">Before Main Prompt</option>
+                                </select>
+                            </div>
+                            
+                            <div class="flex-container wide100p marginTop5">
+                                <div class="flex1 flex-container flexNoGap">
+                                    <small data-i18n="[title]ExtBlocks-editor-injection-depth-desc" title="">
+                                        <span data-i18n="Injection Depth">Injection Depth</span>
+                                        <span class="fa-solid fa-circle-question note-link-span"></span>
+                                    </small>
+                                    <input name="injection_depth" class="text_pole textarea_compact" type="number" min="-999" max="999" data-i18n="[placeholder]ExtBlocks-editor-injection-depth-placeholder" placeholder="4" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex-container wide100p marginTop5" id="ExtBlocks-editor-generation-order-wrapper" style="display:none;">
+                        <div class="flex1 flex-container flexNoGap">
+                            <small data-i18n="[title]ExtBlocks-editor-generation-order-desc" title="">
+                                <span data-i18n="Generation Order">Generation Order</span>
+                                <span class="fa-solid fa-circle-question note-link-span"></span>
+                            </small>
+                            <select name="ExtBlocks-editor-generation-order" class="text_pole">
+                                <option value="before">Before blocks</option>
+                                <option value="after">After blocks</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            <hr>
+
+            <div class="ExtBlocks-editor-context flex-container flexFlowColumn">
+                <h4 class="ExtBlocks-editor-context-header flex-container justifyCenter alignItemsBaseline">
+                    <strong data-i18n="Context Builder">Context Builder</strong>
+                </h4>
+
+                <div class="ExtBlocks-editor-context-settings flex-container wide100p marginTop5 flexFlowColumn ">
+                    <div class="ExtBlocks-editor-context-builder flex1 flex-container flexNoGap flexFlowColumn alignitemsstart">
+                        <small data-i18n="[title]ExtBlocks-editor-context-item-desc" title="Type of context unit. Context items are separated from each other by new lines.">
+                            <span data-i18n="Context Item">Context Item</span>
+                            <span class="fa-solid fa-circle-question note-link-span"></span>
+                        </small>
+                        <select name="ExtBlocks-editor-context-item" class="text_pole">
+                            <option value="text">Text</option>
+                            <option value="last_messages">Last messages</option>
+                            <option value="last_messages_keyword">Last messages by keyword</option>
+                            <option value="previous_block">Previous block</option>
+                        </select>
+
+                        <label for="ExtBlocks-editor-context-builder-name" class="title_restorable">
+                            <small data-i18n="Item Name">Item Name</small>
+                        </label>
+                        <div class="wide100p">
+                            <input
+                                class="ExtBlocks-editor-context-builder-name text_pole textarea_compact"
+                                type="text" />
+                        </div>
+
+                        <div id="ExtBlocks-editor-context-builder-text" class="wide100p">
+                            <label for="ExtBlocks-editor-context-builder-text-content" class="title_restorable">
+                                <small data-i18n="Content">Content</small>
+                            </label>
+                            <div class="wide100p">
+                                <textarea
+                                    class="ExtBlocks-editor-context-builder-text-content text_pole wide100p textarea_compact"
+                                    data-i18n="[placeholder]ExtBlocks-editor-block-template-placeholder"
+                                    rows="8"
+                                ></textarea>
+                            </div>
+                        </div>
+
+                        <div id="ExtBlocks-editor-context-builder-messages" style="display:none;" class="wide100p">
+                            <label for="ExtBlocks-editor-context-builder-messages-count" class="title_restorable">
+                                <small data-i18n="Messages Count">Messages Count</small>
+                            </label>
+                            <input name="ExtBlocks-editor-context-builder-messages-count" class="text_pole textarea_compact" type="number" min="-999" max="999" data-i18n="[placeholder]ExtBlocks-editor-context-builder-messages-count-placeholder" placeholder="10" />
+                            <label for="ExtBlocks-editor-context-builder-messages-separator" class="title_restorable">
+                                <small data-i18n="Messages Separator">Messages Separator</small>
+                            </label>
+                            <select name="ExtBlocks-editor-context-builder-messages-separator" class="text_pole">
+                                <option value="double_newline">Double newline</option>
+                                <option value="newline">Newline</option>
+                                <option value="space">Space</option>
+                            </select>
+                
+                            <label for="ExtBlocks-editor-context-builder-messages-userprefix" class="title_restorable">
+                                <small data-i18n="User Prefix">User Prefix</small>
+                            </label>
+                            <div class="flex-container">
+                                <input
+                                class="ExtBlocks-editor-context-builder-messages-userprefix text_pole textarea_compact"
+                                type="text" />
+                            </div>
+                            
+                            <label for="ExtBlocks-editor-context-builder-messages-usersuffix" class="title_restorable">
+                                <small data-i18n="User Suffix">User Suffix</small>
+                            </label>
+                            <div class="flex-container">
+                                <input
+                                class="ExtBlocks-editor-context-builder-messages-usersuffix text_pole textarea_compact"
+                                type="text" />
+                            </div>
+
+                            <label for="ExtBlocks-editor-context-builder-messages-charprefix" class="title_restorable">
+                                <small data-i18n="Char Prefix">Char Prefix</small>
+                            </label>
+                            <div class="flex-container">
+                                <input
+                                class="ExtBlocks-editor-context-builder-messages-charprefix text_pole textarea_compact"
+                                type="text" />
+                            </div>
+
+                            <label for="ExtBlocks-editor-context-builder-messages-charsuffix" class="title_restorable">
+                                <small data-i18n="Char Suffix">Char Suffix</small>
+                            </label>
+                            <div class="flex-container">
+                                <input
+                                class="ExtBlocks-editor-context-builder-messages-charsuffix text_pole textarea_compact"
+                                type="text" />
+                            </div>
+                        </div>
+
+
+                        <div id="ExtBlocks-editor-context-builder-keywordmessages" style="display:none;" class="wide100p">
+                            <label for="ExtBlocks-editor-context-builder-keywordmessages-keywordstopper" class="title_restorable">
+                                <small data-i18n="Keyword Stopper">Keyword Stopper</small>
+                            </label>
+                            <div class="flex-container">
+                                <input
+                                class="ExtBlocks-editor-context-builder-keywordmessages-keywordstopper text_pole textarea_compact"
+                                type="text" />
+                            </div>
+                            <label for="ExtBlocks-editor-context-builder-keywordmessages-separator" class="title_restorable">
+                                <small data-i18n="Messages Separator">Messages Separator</small>
+                            </label>
+                            <select name="ExtBlocks-editor-context-builder-keywordmessages-separator" class="text_pole">
+                                <option value="double_newline">Double newline</option>
+                                <option value="newline">Newline</option>
+                                <option value="space">Space</option>
+                            </select>
+                
+                            <label for="ExtBlocks-editor-context-builder-keywordmessages-userprefix" class="title_restorable">
+                                <small data-i18n="User Prefix">User Prefix</small>
+                            </label>
+                            <div class="flex-container">
+                                <input
+                                class="ExtBlocks-editor-context-builder-keywordmessages-userprefix text_pole textarea_compact"
+                                type="text" />
+                            </div>
+                            
+                            <label for="ExtBlocks-editor-context-builder-keywordmessages-usersuffix" class="title_restorable">
+                                <small data-i18n="User Suffix">User Suffix</small>
+                            </label>
+                            <div class="flex-container">
+                                <input
+                                class="ExtBlocks-editor-context-builder-keywordmessages-usersuffix text_pole textarea_compact"
+                                type="text" />
+                            </div>
+
+                            <label for="ExtBlocks-editor-context-builder-keywordmessages-charprefix" class="title_restorable">
+                                <small data-i18n="Char Prefix">Char Prefix</small>
+                            </label>
+                            <div class="flex-container">
+                                <input
+                                class="ExtBlocks-editor-context-builder-keywordmessages-charprefix text_pole textarea_compact"
+                                type="text" />
+                            </div>
+
+                            <label for="ExtBlocks-editor-context-builder-keywordmessages-charsuffix" class="title_restorable">
+                                <small data-i18n="Char Suffix">Char Suffix</small>
+                            </label>
+                            <div class="flex-container">
+                                <input
+                                class="ExtBlocks-editor-context-builder-keywordmessages-charsuffix text_pole textarea_compact"
+                                type="text" />
+                            </div>
+                        </div>
+
+
+                        <div id="ExtBlocks-editor-context-builder-block" style="display:none;" class="wide100p">
+                            <label for="ExtBlocks-editor-context-builder-block-name" class="title_restorable">
+                                <small data-i18n="Block Name">Block Name</small>
+                            </label>
+                            <div class="wide100p">
+                                <input
+                                    class="ExtBlocks-editor-context-builder-block-name text_pole textarea_compact"
+                                    placeholder="Exact block name without angle brackets."
+                                    type="text" />
+                            </div>
+                            <label for="ExtBlocks-editor-context-builder-block-count" class="title_restorable">
+                                <small data-i18n="Blocks Count">Blocks Count</small>
+                            </label>
+                            <input name="ExtBlocks-editor-context-builder-block-count" class="text_pole textarea_compact" type="number" min="1" max="999" data-i18n="[placeholder]ExtBlocks-editor-context-builder-block-count-placeholder" placeholder="1" />
+                        </div>
+
+                        <div class="ExtBlocks-preset-context-item-add menu_button menu_button_icon fa-solid fa-plus" id="ExtBlocks-editor-context-item-new" title="Add new context item"></div>
+                        <div class="ExtBlocks-editor-context-item-buttons">
+                            <div class="ExtBlocks-preset-context-item-save menu_button menu_button_icon fa-solid fa-save" id="ExtBlocks-editor-context-item-save" title="Save context item" style="display:none;"></div>
+                            <div class="ExtBlocks-preset-context-item-exit menu_button menu_button_icon fa-solid fa-times" id="ExtBlocks-editor-context-item-exit" title="Exit edit mode" style="display:none;"></div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div id="ExtBlocks-editor-context-wrapper" class="ExtBlocks-editor-context-wrapper">
+                        <div class="ExtBlocks-editor-context-list-label justifyCenter">
+                            <strong data-i18n="ExtBlocks-editor-context-list-label">Context:</strong>
+                            <div class="ExtBlocks-editor-context-list-actions">
+                                <div class="ExtBlocks-editor-context-import menu_button menu_button_icon fa-solid fa-file-import" id="ExtBlocks-editor-context-import" title="Import context"></div>
+                                <input type="file" id="ExtBlocks-editor-context-importFile" accept=".json" hidden>
+                                <div class="ExtBlocks-editor-context-export menu_button menu_button_icon fa-solid fa-file-export" id="ExtBlocks-editor-context-export" title="Export context"></div>
+                            </div>
+                        </div>
+                        <div id="ExtBlocks-editor-context-list" class="flex-container ExtBlocks-editor-context-container flexFlowColumn"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
