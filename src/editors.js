@@ -94,13 +94,6 @@ export async function openEditor(existingId, isScoped) {
         editorHtml.find('.ExtBlocks-editor-context-builder-block-name').val('');
         editorHtml.find('input[name="ExtBlocks-editor-context-builder-block-count"]').val('1');
 
-        // Make sure all context builder sections are hidden first
-        editorHtml.find('#ExtBlocks-editor-context-builder-keywordmessages').hide();
-        editorHtml.find('#ExtBlocks-editor-context-builder-messages').hide();
-        editorHtml.find('#ExtBlocks-editor-context-builder-text').hide();
-        editorHtml.find('#ExtBlocks-editor-context-builder-block').hide();
-
-        // Then trigger the change to show the correct one
         isResettingType = true;
         editorHtml.find(`select[name="ExtBlocks-editor-context-item"]`).val(context_type).trigger('change');
         isResettingType = false;
@@ -114,94 +107,102 @@ export async function openEditor(existingId, isScoped) {
         if (isResettingType) return;
 
         const value = editorHtml.find(`select[name="ExtBlocks-editor-context-item"]`).val();
+        
+        // Hide all context builder sections first to prevent overlap
+        editorHtml.find('#ExtBlocks-editor-context-builder-text').hide();
+        editorHtml.find('#ExtBlocks-editor-context-builder-messages').hide();
+        editorHtml.find('#ExtBlocks-editor-context-builder-keywordmessages').hide();
+        editorHtml.find('#ExtBlocks-editor-context-builder-block').hide();
+        
+        // Show the appropriate section based on selected value
         if (value === 'text') {
-            editorHtml.find('#ExtBlocks-editor-context-builder-keywordmessages').hide()
-            editorHtml.find('#ExtBlocks-editor-context-builder-messages').hide()
-            editorHtml.find('#ExtBlocks-editor-context-builder-block').hide()
-            editorHtml.find('#ExtBlocks-editor-context-builder-text').show()
+            editorHtml.find('#ExtBlocks-editor-context-builder-text').show();
         } else if (value === 'last_messages') {
-            editorHtml.find('#ExtBlocks-editor-context-builder-keywordmessages').hide()
-            editorHtml.find('#ExtBlocks-editor-context-builder-text').hide()
-            editorHtml.find('#ExtBlocks-editor-context-builder-block').hide()
-            editorHtml.find('#ExtBlocks-editor-context-builder-messages').show()
+            editorHtml.find('#ExtBlocks-editor-context-builder-messages').show();
         } else if (value === 'previous_block') {
-            editorHtml.find('#ExtBlocks-editor-context-builder-keywordmessages').hide()
-            editorHtml.find('#ExtBlocks-editor-context-builder-messages').hide()
-            editorHtml.find('#ExtBlocks-editor-context-builder-text').hide()
-            editorHtml.find('#ExtBlocks-editor-context-builder-block').show()
+            editorHtml.find('#ExtBlocks-editor-context-builder-block').show();
         } else if (value === 'last_messages_keyword') {
-            editorHtml.find('#ExtBlocks-editor-context-builder-messages').hide()
-            editorHtml.find('#ExtBlocks-editor-context-builder-text').hide()
-            editorHtml.find('#ExtBlocks-editor-context-builder-block').hide()
-            editorHtml.find('#ExtBlocks-editor-context-builder-keywordmessages').show()
+            editorHtml.find('#ExtBlocks-editor-context-builder-keywordmessages').show();
         }
-        exitEditMode(value);
+        
+        // Only exit edit mode if we're not currently editing an item
+        if (editingContextItemIndex === -1) {
+            exitEditMode(value);
+        }
+    }
+
+    function updateContextItemFromForm(existingId) {
+        const name = String(editorHtml.find('.ExtBlocks-editor-context-builder-name').val());
+        const context_type = editorHtml.find(`select[name="ExtBlocks-editor-context-item"]`).val();
+        
+        let context_item;
+        if (context_type === 'text') {
+            context_item = {
+                id: existingId,
+                name: name,
+                type: context_type,
+                text: String(editorHtml.find('.ExtBlocks-editor-context-builder-text-content').val())
+            };
+        } else if (context_type === 'last_messages') {
+            context_item = {
+                id: existingId,
+                name: name,
+                type: context_type,
+                messages_count: parseInt(String(editorHtml.find('input[name="ExtBlocks-editor-context-builder-messages-count"]').val())) || 10,
+                messages_separator: String(editorHtml.find('select[name="ExtBlocks-editor-context-builder-messages-separator"]').val()),
+                user_prefix: String(editorHtml.find('.ExtBlocks-editor-context-builder-messages-userprefix').val()).replace(/\\n/g, '\n'),
+                user_suffix: String(editorHtml.find('.ExtBlocks-editor-context-builder-messages-usersuffix').val()).replace(/\\n/g, '\n'),
+                char_prefix: String(editorHtml.find('.ExtBlocks-editor-context-builder-messages-charprefix').val()).replace(/\\n/g, '\n'),
+                char_suffix: String(editorHtml.find('.ExtBlocks-editor-context-builder-messages-charsuffix').val()).replace(/\\n/g, '\n')
+            };
+        } else if (context_type === 'last_messages_keyword') {
+            context_item = {
+                id: existingId,
+                name: name,
+                type: context_type,
+                keyword_stopper: String(editorHtml.find('.ExtBlocks-editor-context-builder-keywordmessages-keywordstopper').val()) || '',
+                messages_separator: String(editorHtml.find('select[name="ExtBlocks-editor-context-builder-messages-separator"]').val()),
+                user_prefix: String(editorHtml.find('.ExtBlocks-editor-context-builder-messages-userprefix').val()).replace(/\\n/g, '\n'),
+                user_suffix: String(editorHtml.find('.ExtBlocks-editor-context-builder-messages-usersuffix').val()).replace(/\\n/g, '\n'),
+                char_prefix: String(editorHtml.find('.ExtBlocks-editor-context-builder-messages-charprefix').val()).replace(/\\n/g, '\n'),
+                char_suffix: String(editorHtml.find('.ExtBlocks-editor-context-builder-messages-charsuffix').val()).replace(/\\n/g, '\n')
+            };
+        } else if (context_type === 'previous_block') {
+            context_item = {
+                id: existingId,
+                name: name,
+                type: context_type,
+                block_name: String(editorHtml.find('.ExtBlocks-editor-context-builder-block-name').val()),
+                block_count: parseInt(String(editorHtml.find('input[name="ExtBlocks-editor-context-builder-block-count"]').val())) || 1
+            };
+        }
+
+        if (!context_item.name) {
+            toastr.error('Could not save context item: The context item name was undefined or empty!');
+            return null;
+        }
+
+        return context_item;
     }
 
     editorHtml.find('#ExtBlocks-editor-context-item-save').off('click').on('click', () => {
         if (editingContextItemIndex !== -1) {
-            let context_item;
-            const id = contextItems[editingContextItemIndex].id;
-            const name = String(editorHtml.find('.ExtBlocks-editor-context-builder-name').val());
-            const context_type = editorHtml.find(`select[name="ExtBlocks-editor-context-item"]`).val();
-            if (context_type === 'text') {
-                context_item = {
-                    id: id,
-                    name: name,
-                    type: context_type,
-                    text: String(editorHtml.find('.ExtBlocks-editor-context-builder-text-content').val())
-                };
-            } else if (context_type === 'last_messages') {
-                context_item = {
-                    id: id,
-                    name: name,
-                    type: context_type,
-                    messages_count: parseInt(String(editorHtml.find('input[name="ExtBlocks-editor-context-builder-messages-count"]').val())) || 10,
-                    messages_separator: String(editorHtml.find('select[name="ExtBlocks-editor-context-builder-messages-separator"]').val()),
-                    user_prefix: String(editorHtml.find('.ExtBlocks-editor-context-builder-messages-userprefix').val()).replace(/\\n/g, '\n'),
-                    user_suffix: String(editorHtml.find('.ExtBlocks-editor-context-builder-messages-usersuffix').val()).replace(/\\n/g, '\n'),
-                    char_prefix: String(editorHtml.find('.ExtBlocks-editor-context-builder-messages-charprefix').val()).replace(/\\n/g, '\n'),
-                    char_suffix: String(editorHtml.find('.ExtBlocks-editor-context-builder-messages-charsuffix').val()).replace(/\\n/g, '\n')
-                };
-            } else if (context_type === 'last_messages_keyword') {
-                context_item = {
-                    id: id,
-                    name: name,
-                    type: context_type,
-                    keyword_stopper: String(editorHtml.find('.ExtBlocks-editor-context-builder-keywordmessages-keywordstopper').val()) || '',
-                    messages_separator: String(editorHtml.find('select[name="ExtBlocks-editor-context-builder-messages-separator"]').val()),
-                    user_prefix: String(editorHtml.find('.ExtBlocks-editor-context-builder-messages-userprefix').val()).replace(/\\n/g, '\n'),
-                    user_suffix: String(editorHtml.find('.ExtBlocks-editor-context-builder-messages-usersuffix').val()).replace(/\\n/g, '\n'),
-                    char_prefix: String(editorHtml.find('.ExtBlocks-editor-context-builder-messages-charprefix').val()).replace(/\\n/g, '\n'),
-                    char_suffix: String(editorHtml.find('.ExtBlocks-editor-context-builder-messages-charsuffix').val()).replace(/\\n/g, '\n')
-                };
-            } else if (context_type === 'previous_block') {
-                context_item = {
-                    id: id,
-                    name: name,
-                    type: context_type,
-                    block_name: String(editorHtml.find('.ExtBlocks-editor-context-builder-block-name').val()),
-                    block_count: parseInt(String(editorHtml.find('input[name="ExtBlocks-editor-context-builder-block-count"]').val())) || 1
-                };
+            const existingId = contextItems[editingContextItemIndex].id;
+            const context_item = updateContextItemFromForm(existingId);
+            
+            if (context_item) {
+                contextItems[editingContextItemIndex] = context_item;
+                loadContextItems(editorHtml);
+                exitEditMode();
             }
-
-            if (!context_item.name) {
-                toastr.error('Could not save context item: The context item name was undefined or empty!');
-                return;
+        } else {
+            // If not editing an existing item, create a new one
+            const context_item = createContextItemFromForm();
+            if (context_item) {
+                contextItems.push(context_item);
+                loadContextItems(editorHtml);
+                exitEditMode();
             }
-
-            // Save the context item first
-            contextItems[editingContextItemIndex] = context_item;
-            
-            // Then update the UI and exit edit mode
-            loadContextItems(editorHtml);
-            
-            // Make sure we don't trigger another change event that would reset the form
-            const currentType = editorHtml.find(`select[name="ExtBlocks-editor-context-item"]`).val();
-            exitEditMode(currentType);
-            
-            // Show a confirmation message
-            toastr.success('Context item saved successfully');
         }
     });
 
@@ -209,7 +210,6 @@ export async function openEditor(existingId, isScoped) {
         exitEditMode();
     });
 
-    // This is the only place we should set up the change handler
     editorHtml.find(`select[name="ExtBlocks-editor-context-item"]`).off('change').on('change', handleContextItemTypeChange);
 
     editorHtml.find('#ExtBlocks-editor-context-importFile').on('change', async function () {
@@ -337,13 +337,14 @@ export async function openEditor(existingId, isScoped) {
     ];
     await interactiveSortData(sortableContextItems);
 
-    // Remove duplicate event handler - the one defined in handleContextItemTypeChange is sufficient
+    editorHtml.find(`select[name="ExtBlocks-editor-context-item"]`).off('click').on('change', handleContextItemTypeChange);
 
-    editorHtml.find('.ExtBlocks-preset-context-item-add').off('click').on('click', () => {
-        let context_item;
+    function createContextItemFromForm() {
         const id = uuidv4();
         const name = String(editorHtml.find('.ExtBlocks-editor-context-builder-name').val());
         const context_type = editorHtml.find(`select[name="ExtBlocks-editor-context-item"]`).val();
+        
+        let context_item;
         if (context_type === ContextType.TEXT) {
             context_item = {
                 id: id,
@@ -387,11 +388,19 @@ export async function openEditor(existingId, isScoped) {
 
         if (!context_item.name) {
             toastr.error('Could not save context item: The context item name was undefined or empty!');
-            return;
+            return null;
         }
 
-        contextItems.push(context_item);
-        loadContextItems(editorHtml);
+        return context_item;
+    }
+
+    editorHtml.find('.ExtBlocks-preset-context-item-add').off('click').on('click', () => {
+        const context_item = createContextItemFromForm();
+        if (context_item) {
+            contextItems.push(context_item);
+            loadContextItems(editorHtml);
+            exitEditMode();
+        }
     });
 
 
