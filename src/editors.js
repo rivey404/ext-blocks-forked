@@ -107,6 +107,7 @@ export async function openEditor(existingId, isScoped) {
         if (isResettingType) return;
 
         const value = editorHtml.find(`select[name="ExtBlocks-editor-context-item"]`).val();
+        console.log('handleContextItemTypeChange called with value:', value, 'editingContextItemIndex:', editingContextItemIndex);
         if (value === 'text') {
             editorHtml.find('#ExtBlocks-editor-context-builder-keywordmessages').hide()
             editorHtml.find('#ExtBlocks-editor-context-builder-messages').hide()
@@ -129,18 +130,18 @@ export async function openEditor(existingId, isScoped) {
             editorHtml.find('#ExtBlocks-editor-context-builder-keywordmessages').show()
         }
         
-        // Only call exitEditMode if we're not currently editing a context item
-        if (editingContextItemIndex === -1) {
-            exitEditMode(value);
-        }
+        // Don't call exitEditMode when changing dropdown type - just show/hide the appropriate sections
+        // exitEditMode should only be called when explicitly exiting edit mode
     }
 
     editorHtml.find('#ExtBlocks-editor-context-item-save').off('click').on('click', () => {
+        console.log('Save button clicked, editingContextItemIndex:', editingContextItemIndex);
         if (editingContextItemIndex !== -1) {
             let context_item;
             const id = contextItems[editingContextItemIndex].id;
             const name = String(editorHtml.find('.ExtBlocks-editor-context-builder-name').val());
             const context_type = editorHtml.find(`select[name="ExtBlocks-editor-context-item"]`).val();
+            console.log('Attempting to save with name:', name, 'type:', context_type);
             if (context_type === 'text') {
                 context_item = {
                     id: id,
@@ -186,6 +187,8 @@ export async function openEditor(existingId, isScoped) {
                 toastr.error('Could not save context item: The context item name was undefined or empty!');
                 return;
             }
+
+            console.log('Saving context item:', context_item);
 
             contextItems[editingContextItemIndex] = context_item;
             loadContextItems(editorHtml);
@@ -326,10 +329,12 @@ export async function openEditor(existingId, isScoped) {
 
 
     editorHtml.find('.ExtBlocks-preset-context-item-add').off('click').on('click', () => {
+        console.log('Add button clicked');
         let context_item;
         const id = uuidv4();
         const name = String(editorHtml.find('.ExtBlocks-editor-context-builder-name').val());
         const context_type = editorHtml.find(`select[name="ExtBlocks-editor-context-item"]`).val();
+        console.log('Adding new context item with name:', name, 'type:', context_type);
         if (context_type === ContextType.TEXT) {
             context_item = {
                 id: id,
