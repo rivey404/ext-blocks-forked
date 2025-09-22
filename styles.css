@@ -34,7 +34,8 @@
     margin-bottom: 10px;
     overflow-y: auto;
     width: 100%;
-    height: 100%;
+    flex: 1 1 auto;
+    min-height: 0;
 }
 
 .ExtBlocks-blocks-container:empty::after {
@@ -95,14 +96,22 @@
 
 .ExtBlocks-editor-context-settings {
     height: 85%;
+    display: flex;
+    flex-direction: column;
 }
 
 .ExtBlocks-editor-context-builder {
-    height: 70%;
+    flex: 0 0 auto;
+    max-height: 70%;
+    overflow-y: auto;
+    padding-bottom: 10px;
 }
 
 .ExtBlocks-editor-context-wrapper {
-    height: 30%;
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 .ExtBlocks-scripteditor-settings {
